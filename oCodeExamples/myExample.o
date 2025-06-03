@@ -1,0 +1,30 @@
+MODULE TestIfChain;
+IMPORT Out;
+VAR
+  a, b, c, d, x: INTEGER;
+
+BEGIN
+  a := 5; b := 10; c := 5; d := 5; x := 2;
+
+  IF a * 2 = 5 OR ~ (x +1 = 2) THEN
+    IF b = 101 THEN
+      Out.Int(b, 0);
+    ELSIF (c  + 1) = 6 THEN
+      WHILE c > 0 DO
+       c := c - 1;
+       WHILE (a > 0) DO
+          a := a - 1;
+       END;
+       Out.Int(c, 0);
+      END;
+    ELSE
+      Out.Int(2222, 5);
+    END;
+  ELSIF (c = 5) AND (x > 0) THEN
+    Out.Int(200, 5);
+  ELSE
+    Out.Int(1000, 5);
+  END;
+
+  Out.Ln;
+END TestIfChain.
