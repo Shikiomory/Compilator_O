@@ -350,74 +350,56 @@ void Parser::variableOrCallPrc()
 //   [ELSE
 //     ПослОператоров]
 //    END
-// Updated Parser::ifStatementPrc to correctly handle nested ELSIF and nested IFs
 void Parser::ifStatementPrc()
 {
-    // Stack to hold positions of unconditional exits (GOTO) for all branches
     std::vector<int> exitJumpPositions;
-
-    // 1) Parse 'IF' and the boolean expression
     checkLex(Scanner::Lex::IF);
     Item::ItemTypes expressionType = expressionPrc();
     checkBoolType(expressionType);
 
-    // 2) Prepare placeholder for false jump of first IF
     int falseJumpPos = generateCode.getCmdCounter();
-    generateCode.gen(0);            // Placeholder address (override later)
+    generateCode.gen(0);           
     generateCode.gen(OVM::IFZ);
 
-    // 3) Parse 'THEN' and its statements
     checkLex(Scanner::Lex::THEN);
     sequenceStatementsPrc();
 
-    // 4) After executing the 'THEN' branch, unconditionally jump to end of IF
     int exitPos = generateCode.getCmdCounter();
     generateCode.gen(0);
     generateCode.gen(OVM::GOTO);
     exitJumpPositions.push_back(exitPos);
 
-    // 5) Set the false-jump placeholder of the IF to the next instruction
     generateCode.getMemory()[falseJumpPos] = generateCode.getCmdCounter();
 
-    // 6) Handle all 'ELSIF' clauses
     while (scanner.lex == Scanner::Lex::ELSIF)
     {
-        // 6.1) Parse 'ELSIF' and its condition
         checkLex(Scanner::Lex::ELSIF);
         expressionType = expressionPrc();
         checkBoolType(expressionType);
 
-        // 6.2) Placeholder for false jump of this ELSIF
         falseJumpPos = generateCode.getCmdCounter();
         generateCode.gen(0);
         generateCode.gen(OVM::IFZ);
 
-        // 6.3) Parse 'THEN' and its statements
         checkLex(Scanner::Lex::THEN);
         sequenceStatementsPrc();
 
-        // 6.4) Unconditionally jump to end of IF after this branch
         exitPos = generateCode.getCmdCounter();
         generateCode.gen(0);
         generateCode.gen(OVM::GOTO);
         exitJumpPositions.push_back(exitPos);
 
-        // 6.5) Set previous false jump to current instruction
         generateCode.getMemory()[falseJumpPos] = generateCode.getCmdCounter();
     }
 
-    // 7) Handle optional 'ELSE' clause
     if (scanner.lex == Scanner::Lex::ELSE)
     {
-        // 7.1) Parse 'ELSE' and its statements
         checkLex(Scanner::Lex::ELSE);
         sequenceStatementsPrc();
     }
 
-    // 8) Expect 'END' and finish IF
     checkLex(Scanner::Lex::END);
 
-    // 9) Patch all recorded exit jumps to point here
     for (int pos : exitJumpPositions)
     {
         generateCode.getMemory()[pos] = generateCode.getCmdCounter();
