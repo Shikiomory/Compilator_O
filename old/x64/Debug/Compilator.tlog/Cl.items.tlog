@@ -1,8 +1,0 @@
-F:\projects\Compilator\Compilator\error\Error.cpp;F:\projects\Compilator\Compilator\x64\Debug\Error.obj
-F:\projects\Compilator\Compilator\main.cpp;F:\projects\Compilator\Compilator\x64\Debug\main.obj
-F:\projects\Compilator\Compilator\parser\Parser.cpp;F:\projects\Compilator\Compilator\x64\Debug\Parser.obj
-F:\projects\Compilator\Compilator\scanner\Scanner.cpp;F:\projects\Compilator\Compilator\x64\Debug\Scanner.obj
-F:\projects\Compilator\Compilator\sourceCodeDriver\Driver.cpp;F:\projects\Compilator\Compilator\x64\Debug\Driver.obj
-F:\projects\Compilator\Compilator\table\TableOfName.cpp;F:\projects\Compilator\Compilator\x64\Debug\TableOfName.obj
-F:\projects\Compilator\Compilator\virtualMachine\generateCode.cpp;F:\projects\Compilator\Compilator\x64\Debug\generateCode.obj
-F:\projects\Compilator\Compilator\virtualMachine\ovm.cpp;F:\projects\Compilator\Compilator\x64\Debug\ovm.obj
